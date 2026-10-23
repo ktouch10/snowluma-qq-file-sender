@@ -4,7 +4,9 @@
 
 提供 **stdio MCP + CLI**：准备文件 → 发送 → 查询状态。文件内容由本机 QQ 后端读取上传；模型只接触文件名、大小、校验值和发送状态。工具不调用模型 API，也不需要模型密钥。
 
-适合“生成报告后把文件发给我”这类个人秘书任务。它只处理文件发送，不接收群消息，不提供群管理或聊天记忆功能。
+适合“生成报告后把文件发给我”这类个人秘书任务。**v0.2.0 新增可选的 QQ 私聊找文件**：本人说出关键词，在明确允许的电脑目录或群文件中查找，选中后发回自己。无需调用模型，不产生模型 token 费用。
+
+MCP/CLI 可单独使用；QQ 查找入口默认关闭，开启后需要常驻事件监听。它不接收群聊指令，不提供群管理或聊天记忆功能。
 
 ## 需要什么
 
@@ -56,6 +58,26 @@ node .\src\cli.js --status <deliveryId>
 也可以用 `--file <绝对路径>` 直接准备并发送。CLI 会在网络请求前打印记录 ID，中途退出后应先用该 ID 查状态。没有鉴权的网关可省略 `ONEBOT_ACCESS_TOKEN`；推荐启用网关鉴权。
 
 Linux/macOS 的路径和环境变量语法需要相应替换。所有运行数据写在 `FILE_SECRETARY_HOME`；想节省系统盘空间，就把它和产物目录设在其他磁盘。
+
+## 在 QQ 私聊中找文件（可选）
+
+按 [QQ 查找配置与操作流程](docs/QQ_FILE_SEARCH.md) 设置允许目录、群名单、`search.enabled` 和 `search.receivePrivateMessages`，在 SnowLuma 开启本机正向 OneBot WebSocket 事件接口，然后运行：
+
+```powershell
+npm run listen
+```
+
+用配置的收件 QQ 私聊机器人：
+
+```text
+找文件 项目报告 pdf
+找群文件 高数 复习
+发送第2个
+文件状态
+取消找文件
+```
+
+只有明确要求“发给我”、结果唯一且搜索完整时才直接发送，否则先列候选。按文件名匹配，不读取文档正文理解内容；多候选最多列 6 个，10 分钟内可选择。目录与群名单可以随时撤销；陌生人和群聊不能调用此入口。
 
 ## 接入 MCP
 
@@ -119,8 +141,8 @@ Linux/macOS 的路径和环境变量语法需要相应替换。所有运行数�
 | 项目 | 已有能力 | 本工具的定位 |
 | --- | --- | --- |
 | [onebot-mcp](https://github.com/Frostbite-time/onebot-mcp) | HTTP MCP 包装多种 OneBot 动作；上传依赖后端能看到文件路径 | 专门面向本机固定收件人的文件任务，直接提供 stdio 与 CLI |
-| [astral-im-bridge](https://github.com/oines/astral-im-bridge) | QQ/Telegram 与 Astral Code 双向桥接，提供文件工具和消息历史 | 仅做输出文件投递，不需要接收事件、聊天数据库或 Astral 会话 |
-| [onebot-agent-bridge](https://github.com/Reshwell/onebot-agent-bridge) | CLI/MCP/HTTP、常驻队列、持久化 requestId 防重发和不确定状态处理 | 不需要额外接收守护进程；以准备副本、固定收件人、发送/查询为入口 |
+| [astral-im-bridge](https://github.com/oines/astral-im-bridge) | QQ/Telegram 与 Astral Code 双向桥接，提供文件工具和消息历史 | 不依赖 Astral 会话或聊天数据库；可选私聊找文件使用规则匹配 |
+| [onebot-agent-bridge](https://github.com/Reshwell/onebot-agent-bridge) | CLI/MCP/HTTP、常驻队列、持久化 requestId 防重发和不确定状态处理 | MCP/CLI 无需接收进程；新增监听只处理本人私聊的文件请求 |
 | [SnowLuma MCP](https://github.com/SnowLuma/SnowLuma/blob/main/packages/mcp/README.md) | 通用动作查询/执行，支持有根目录限制、校验和配额的文件流上传 | 组合成限定用途的文件发送流程；不向 Agent 开放通用动作执行 |
 
 比较依据为这些项目截至 2026-10-23 的公开文档，没有对全部项目做实机性能或可靠性排名。[设计说明](docs/DESIGN.md) 记录接口依据与取舍。

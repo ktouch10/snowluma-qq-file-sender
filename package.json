@@ -1,8 +1,8 @@
 {
   "name": "snowluma-qq-file-sender",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Local MCP and CLI file sender for a SnowLuma QQ chatbot, with fixed recipient and durable delivery records",
+  "description": "SnowLuma QQ file sender with MCP, CLI and optional owner-private file search",
   "type": "module",
   "license": "MIT",
   "engines": {
@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node src/mcp.js",
     "test": "node --test --test-isolation=none test/*.test.js",
-    "send": "node src/cli.js"
+    "send": "node src/cli.js",
+    "listen": "node src/qq-listener.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

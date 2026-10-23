@@ -1,5 +1,8 @@
 node_modules/
 .test-tmp/
+test-tmp/
+search-data/
+outbox/
 secretary.json
 deliveries/
 .env

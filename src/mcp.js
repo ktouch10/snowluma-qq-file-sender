@@ -33,7 +33,7 @@ export function registerTools(server, service) {
 if(process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
   try {
     const service = new SecretaryFiles({root:process.env.FILE_SECRETARY_HOME});
-    const server = new McpServer({name:'snowluma-qq-file-sender',version:'0.1.0'});
+    const server = new McpServer({name:'snowluma-qq-file-sender',version:'0.2.0'});
     registerTools(server,service);
     await server.connect(new StdioServerTransport());
   } catch(error) { console.error(safeError(error)); process.exitCode=1; }
