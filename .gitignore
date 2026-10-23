@@ -1,0 +1,13 @@
+node_modules/
+.test-tmp/
+secretary.json
+deliveries/
+.env
+.env.*
+*.log
+*.zip
+*.pdf
+*.docx
+*.tmp
+.file-secretary/
+runtime/

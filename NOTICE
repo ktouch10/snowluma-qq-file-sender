@@ -1,0 +1,10 @@
+SnowLuma QQ File Sender
+
+The file-secretary core is derived from qq-bridge's local secretary-files implementation.
+Source project: https://github.com/Derpyu520/qq-bridge
+Copyright (c) 2026 Derpyu520 and qq-bridge / QSH contributors
+Distributed under the MIT License. See LICENSE.
+
+This repository does not distribute SnowLuma, QQ, their native components,
+or code from the comparison projects. Dependencies retain their own licenses.
+Project names identify interoperability targets and do not imply endorsement.
